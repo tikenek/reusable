@@ -53,7 +53,7 @@ jobs:
           node-version: '14'  
           
     - name: check variables 
-      run: echo !${{AWS_ACCESS_KEY_ID}}!
+      run: echo !${AWS_ACCESS_KEY_ID}!
           
     # Will run linters and search for possible errors
     - uses: actions/cache@v2
