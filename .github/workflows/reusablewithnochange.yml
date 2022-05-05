@@ -94,5 +94,10 @@ jobs:
       if: github.event_name == 'pull_request'
       run: terraform plan -no-color
 
-      
+    - name: Run Checkov action
+      id: checkov
+      uses: bridgecrewio/checkov-action@master
+      with:
+        directory: terraform/
+        soft_fail: true      
           
