@@ -101,14 +101,40 @@ jobs:
  #       directory: terraform/
  #       soft_fail: true      
           
+ #   - name: Set up Python 3.8
+ #     uses: actions/setup-python@v1
+ #     with:
+ #       python-version: 3.8
+          
+#    - name: Test with Checkov
+#      id: checkov
+#      uses: bridgecrewio/checkov-action@master
+#      with:
+#         directory: terraform
+#         framework: terraform
+         
     - name: Set up Python 3.8
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
-          
-    - name: Test with Checkov
+        id: setup_py
+
+    - name: Install Checkov
       id: checkov
-      uses: bridgecrewio/checkov-action@master
+      run: |
+        python3 -m pip3 install --upgrade pip3
+        pip3 install checkov
+        continue-on-error: true
+
+    - name: Run Checkov
+      id: run_checkov
+      run: checkov -f tfplan.json -o sarif -s
+      continue-on-error: true
+
+    - name: Upload SARIF file
+      id: upload_sarif
+      uses: github/codeql-action/upload-sarif@v1
       with:
-         directory: terraform
-         framework: terraform 
+        sarif_file: results.sarif
+        category: checkov
+        continue-on-error: true
