@@ -113,11 +113,12 @@ jobs:
 #         directory: terraform
 #         framework: terraform
          
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v1
+
+    - uses: actions/setup-python@v3
       with:
-        python-version: 3.8
-        id: setup_py
+       python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+       architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+       id: setup_py
 
     - name: Install Checkov
       id: checkov
@@ -138,3 +139,5 @@ jobs:
         sarif_file: results.sarif
         category: checkov
         continue-on-error: true
+
+    
